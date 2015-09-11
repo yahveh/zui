@@ -40,6 +40,7 @@
         position: 'fit',
         showHeader: true,
         delay: 0,
+        // iframeBodyClass: '',
         backdrop: true,
         keyboard: true
     };
@@ -117,6 +118,8 @@
 
         this.$modal = $modal;
         this.$dialog = $modal.find('.modal-dialog');
+
+        if(options.mergeOptions) this.options = options;
     };
 
     ModalTrigger.prototype.show = function(option)
@@ -243,6 +246,7 @@
                         {
                             // todo: update iframe url to ref attribute
                             var $framebody = frame$('body').addClass('body-modal');
+                            if(options.iframeBodyClass) $framebody.addClass(options.iframeBodyClass);
                             var ajustFrameSize = function()
                             {
                                 $modal.removeClass('fade');
@@ -254,8 +258,9 @@
 
                             $modal.callEvent('loaded' + ZUI_MODAL,
                             {
-                                modalType: 'iframe'
-                            });
+                                modalType: 'iframe',
+                                jQuery: frame$
+                            }, that);
 
                             setTimeout(ajustFrameSize, 100);
 
@@ -300,7 +305,7 @@
                     $modal.callEvent('loaded' + ZUI_MODAL,
                     {
                         modalType: STR_AJAX
-                    });
+                    }, that);
                     readyToShow();
                 });
             }
